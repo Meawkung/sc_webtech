@@ -87,6 +87,21 @@ app.post('/add', (req, res) => {
     })
 })
 
+app.post('/delete',(req,res)=>{
+    const { username, password } = req.body
+    console.log(username, password)
+    const sql = 'DELETE FROM member WHERE username = ? and password = ?';
+    pool.query(sql, [username, md5(password)], (err, results) => {
+        if (err) {
+            console.log(err)
+            res.json({'msg': 'failed to delete'})
+        } else {
+            res.json({'msg': 'delete done'});
+        }
+    })
+
+})
+
 app.get('*', (req, res) => {
     res.redirect('/login')
 })
